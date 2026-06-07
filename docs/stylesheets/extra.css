@@ -1,0 +1,14 @@
+/* 正文稍微加宽，长代码和公式更好看 */
+.md-grid {
+  max-width: 56rem;
+}
+
+/* 行内代码更醒目一点 */
+.md-typeset code {
+  border-radius: 0.2rem;
+}
+
+/* 踩坑条目里的小标签间距 */
+.md-typeset .md-tag {
+  margin-right: 0.3rem;
+}

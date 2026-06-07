@@ -1,0 +1,51 @@
+{#-
+  giscus 评论组件。
+  使用方法：
+  1. 去 https://giscus.app 按提示生成你的配置，把下面 5 个 <...> 占位符替换掉。
+  2. 在想要开启评论的页面顶部 frontmatter 写 comments: true 即可（见功能速查表）。
+  未配置时不会报错，只是不显示评论。
+-#}
+{% if page.meta.comments %}
+  <h2 id="__comments">评论</h2>
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="<你的用户名/评论仓库名>"
+    data-repo-id="<REPO_ID>"
+    data-category="<分类名，如 Announcements>"
+    data-category-id="<CATEGORY_ID>"
+    data-mapping="pathname"
+    data-strict="1"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin="anonymous"
+    async
+  >
+  </script>
+
+  {#- 让评论框主题跟随站点深色/浅色切换 -#}
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+    function setGiscusTheme() {
+      var palette = __md_get("__palette")
+      if (palette && typeof palette.color === "object") {
+        var theme = palette.color.scheme === "slate" ? "dark" : "light"
+        var frame = document.querySelector(".giscus-frame")
+        if (frame)
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+      }
+    }
+    if (typeof document$ !== "undefined") {
+      document$.subscribe(function() {
+        var ref = document.querySelector("[data-md-component=palette]")
+        if (ref) ref.addEventListener("change", setGiscusTheme)
+        setGiscusTheme()
+      })
+    }
+  </script>
+{% endif %}

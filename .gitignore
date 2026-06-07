@@ -1,0 +1,15 @@
+# 构建产物
+site/
+.cache/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 系统
+.DS_Store
+Thumbs.db
+
+docs/.obsidian/

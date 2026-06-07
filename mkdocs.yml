@@ -1,0 +1,116 @@
+# ============================================================
+#  站点基本信息  —— 部署前请把下面带 < > 的占位符改成你自己的
+# ============================================================
+site_name: 我的笔记
+site_description: 个人课程笔记、实验记录与科研日志
+site_author: Auster Z
+site_url: https://jamesAusteral.github.io/AZnotes/
+
+# ============================================================
+#  主题
+# ============================================================
+theme:
+  name: material
+  language: zh
+  custom_dir: overrides          # 为了挂 giscus 评论
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: 切换到深色模式
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到浅色模式
+  features:
+    - navigation.tabs          # 顶部一级分区做成标签页
+    - navigation.sections      # 侧栏展开二级分区
+    - navigation.indexes       # 分区首页（index.md）作为该分区落地页
+    - navigation.top           # 回到顶部按钮
+    - navigation.footer        # 上一页/下一页
+    - search.suggest
+    - search.highlight
+    - content.code.copy        # 代码块一键复制
+    - content.code.annotate    # 代码注释气泡
+    - toc.follow
+
+# ============================================================
+#  插件
+# ============================================================
+plugins:
+  - search
+  - tags
+  - blog                       # 日记 / 开发日志 / 阅读记录
+  - git-revision-date-localized:
+      type: date
+      enable_creation_date: true
+      fallback_to_build_date: true   # 没在 git 里也不会报错
+
+# ============================================================
+#  Markdown 扩展（你要的折叠块、代码、公式、复选框都在这里）
+# ============================================================
+markdown_extensions:
+  - admonition                 # 提示框
+  - attr_list
+  - md_in_html
+  - footnotes                  # 脚注（时间溯源/出处）
+  - tables
+  - pymdownx.details           # 折叠块 ???
+  - pymdownx.superfences:      # 代码块 + mermaid 图
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true    # 多方案/多语言切页
+  - pymdownx.tasklist:
+      custom_checkbox: true    # - [x] 复选框（尝试完打勾）
+  - pymdownx.arithmatex:
+      generic: true            # 数学公式
+
+# ============================================================
+#  额外资源
+# ============================================================
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - stylesheets/extra.css
+
+# ============================================================
+#  导航（决定顶部标签和侧栏顺序）
+# ============================================================
+nav:
+  - 首页: index.md
+  - 课程笔记:
+      - courses/index.md
+      - NJU OS: courses/nju-os/index.md
+      - Stanford CS336: 
+        - courses/cs336/index.md
+        - CS336 第 1 讲: courses/cs336/lecture-01.md
+      - PKU 编译原理: courses/pku-compiler/index.md
+  - 实验记录:
+      - labs/index.md
+      - 示例 · NJU OS Lab: labs/nju-os/lab-01-example.md
+  - 科研:
+      - research/index.md
+      - LLM Wiki 进度: research/llm-wiki/roadmap.md
+      - 论文解读: research/papers/index.md
+  - 日志:
+      - blog/index.md
+  - 帮助与模板:
+      - 功能速查表: help/feature-snippets.md
+      - 踩坑条目模板: help/lab-entry-template.md
+      - 标签索引: tags.md

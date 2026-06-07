@@ -1,0 +1,22 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main          # 推送到 main 分支即自动构建发布
+
+permissions:
+  contents: write     # 允许 Action 写 gh-pages 分支
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 取完整历史，git-revision-date 插件才能读到每页时间
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: pip install -r requirements.txt
+      - run: mkdocs gh-deploy --force
