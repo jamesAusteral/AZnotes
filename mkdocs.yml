@@ -56,6 +56,7 @@ plugins:
 #  Markdown 扩展（你要的折叠块、代码、公式、复选框都在这里）
 # ============================================================
 markdown_extensions:
+  - pymdownx.magiclink 
   - admonition                 # 提示框
   - attr_list
   - md_in_html
@@ -106,7 +107,12 @@ nav:
       - 示例 · NJU OS Lab: labs/nju-os/lab-01-example.md
   - 科研:
       - research/index.md
-      - LLM Wiki 进度: research/llm-wiki/roadmap.md
+      - LLM Wiki 进度: 
+        - research/llm-wiki/roadmap.md
+        - 2026-06-07: research/llm-wiki/wiki-notes-2026-06-07.md
+        - 2026-06-08: research/llm-wiki/wiki-notes-2026-06-08.md
+        - 2026-06-09: research/llm-wiki/wiki-notes-2026-06-09.md
+        - 2026-06-10: research/llm-wiki/wiki-notes-2026-06-10.md
       - 论文解读: research/papers/index.md
   - 日志:
       - blog/index.md
