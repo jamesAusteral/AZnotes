@@ -818,9 +818,37 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../research/llm-wiki/roadmap/" class="md-nav__link">
+    
+    
+      
         
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -834,7 +862,163 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LLM Wiki 进度
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../research/llm-wiki/roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Wiki 开发进度
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../research/llm-wiki/wiki-notes-2026-06-07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026-06-07
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../research/llm-wiki/wiki-notes-2026-06-08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026-06-08
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../research/llm-wiki/wiki-notes-2026-06-09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026-06-09
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../research/llm-wiki/wiki-notes-2026-06-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026-06-10
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1638,7 +1822,7 @@
 <h2 id="2">2. 本地预览（你每天用得最多的命令）</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mkdocs<span class="w"> </span>serve
 </span></code></pre></div>
-<p>然后浏览器打开 <strong>http://127.0.0.1:8000</strong> 。这个命令会<strong>热重载</strong>——你改任何 <code>.md</code> 文件保存后，网页自动刷新。写笔记时就一直开着它。</p>
+<p>然后浏览器打开 <strong><a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></strong> 。这个命令会<strong>热重载</strong>——你改任何 <code>.md</code> 文件保存后，网页自动刷新。写笔记时就一直开着它。</p>
 <p>按 <code>Ctrl + C</code> 停止。</p>
 <hr />
 <h2 id="3">3. 目录结构（每个东西是干嘛的）</h2>
@@ -1767,7 +1951,7 @@
 <ol>
 <li><strong>建一个公开仓库</strong>专门放评论（比如叫 <code>site-comments</code>），在它的 Settings → General 勾选启用 <strong>Discussions</strong>。</li>
 <li>给这个仓库安装 giscus App：访问 <code>https://github.com/apps/giscus</code> → Install → 选这个仓库。</li>
-<li>去 <strong>https://giscus.app</strong> ，在页面里填入这个公开仓库，映射方式选 <strong>pathname</strong>，分类随便选一个（比如 Announcements）。页面下方会生成一段 <code>&lt;script&gt;</code>，里面有四个值：<code>data-repo</code>、<code>data-repo-id</code>、<code>data-category</code>、<code>data-category-id</code>。</li>
+<li>去 <strong><a href="https://giscus.app">https://giscus.app</a></strong> ，在页面里填入这个公开仓库，映射方式选 <strong>pathname</strong>，分类随便选一个（比如 Announcements）。页面下方会生成一段 <code>&lt;script&gt;</code>，里面有四个值：<code>data-repo</code>、<code>data-repo-id</code>、<code>data-category</code>、<code>data-category-id</code>。</li>
 <li>打开 <code>overrides/partials/comments.html</code>，把里面四个 <code>&lt;...&gt;</code> 占位符替换成这四个值。</li>
 <li>想开评论的页面，在顶部 frontmatter 加 <code>comments: true</code>（示例 lab 已经加了）。不加的页面就没有评论。</li>
 </ol>

@@ -2,90 +2,126 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/tags/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/blog/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/blog/2026/06/06/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95--2026-06-06/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/blog/2026/06/07/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95--2026-06-07/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/blog/2026/06/07/%E7%AB%99%E7%82%B9%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
+    </url>
+    <url>
+         <loc>https://jamesAusteral.github.io/AZnotes/blog/2026/06/08/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95--2026-06-08/</loc>
+         <lastmod>2026-06-10</lastmod>
+    </url>
+    <url>
+         <loc>https://jamesAusteral.github.io/AZnotes/blog/2026/06/09/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95--2026-06-09/</loc>
+         <lastmod>2026-06-10</lastmod>
+    </url>
+    <url>
+         <loc>https://jamesAusteral.github.io/AZnotes/blog/2026/06/10/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95--2026-06-10/</loc>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/courses/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/courses/cs336/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/courses/cs336/lecture-01/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/courses/nju-os/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/courses/pku-compiler/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/help/feature-snippets/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/help/lab-entry-template/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/labs/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/labs/nju-os/lab-01-example/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/research/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
+    </url>
+    <url>
+         <loc>https://jamesAusteral.github.io/AZnotes/research/llm-wiki/research%20report%20of%20LLM%20wiki%20from%20claude/</loc>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/research/llm-wiki/roadmap/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
+    </url>
+    <url>
+         <loc>https://jamesAusteral.github.io/AZnotes/research/llm-wiki/wiki-notes-2026-06-07/</loc>
+         <lastmod>2026-06-10</lastmod>
+    </url>
+    <url>
+         <loc>https://jamesAusteral.github.io/AZnotes/research/llm-wiki/wiki-notes-2026-06-08/</loc>
+         <lastmod>2026-06-10</lastmod>
+    </url>
+    <url>
+         <loc>https://jamesAusteral.github.io/AZnotes/research/llm-wiki/wiki-notes-2026-06-09/</loc>
+         <lastmod>2026-06-10</lastmod>
+    </url>
+    <url>
+         <loc>https://jamesAusteral.github.io/AZnotes/research/llm-wiki/wiki-notes-2026-06-10/</loc>
+         <lastmod>2026-06-10</lastmod>
+    </url>
+    <url>
+         <loc>https://jamesAusteral.github.io/AZnotes/research/llm-wiki/wiki%E7%9A%84%E6%8A%80%E6%9C%AF%E5%B1%82%E7%BA%A7%E5%8F%8A%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E8%B0%83%E6%9F%A5%E3%80%82/</loc>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/research/papers/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/blog/archive/2026/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/blog/category/%E6%AF%8F%E6%97%A5%E9%98%85%E8%AF%BB/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
     <url>
          <loc>https://jamesAusteral.github.io/AZnotes/blog/category/%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/</loc>
-         <lastmod>2026-06-07</lastmod>
+         <lastmod>2026-06-10</lastmod>
     </url>
 </urlset>
