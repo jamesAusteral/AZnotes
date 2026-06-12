@@ -11,8 +11,7 @@ categories:
 <!-- more -->
 
 
-今天我让DeepSeek接入Claude code先根据karpathy的最初思路llm-wiki.md，建立了一个最简单版的llm-wiki。
-并且上传到GitHub中，push了第一版的wiki系统。
+今天我让DeepSeek接入Claude code先根据karpathy的最初思路llm-wiki.md，建立了一个最简单版的llm-wiki。并且上传到GitHub中，push了第一版的wiki系统。
 
 wiki如今能支持DeepSeek的api。
 
@@ -35,8 +34,11 @@ wiki如今能支持DeepSeek的api。
 打开 Obsidian，看点有代表性的页面：
 
 - **wiki/index.md** — wiki 的目录，了解生成的内容结构
+
 - **随便打开几个** **[[page]]** — 看页面长什么样，感受交叉引用的密度
+
 - **Graph view**（左边工具栏点图谱图标）— 看知识网络的形状，哪些页面是枢纽
+
 - **看一个页面的 Backlinks**（右侧面板）— 感受「哪些其他页面引用了这个页面」
 
 **第二步：理解 Prompt（最重要，20 分钟）**
@@ -63,7 +65,9 @@ wiki_engine/engine.py
 重点看三个方法的流程：
 
 - ingest() — 读文件 → 调 LLM → 解析输出 → 写页面 → 更新 index → 记 log
+
 - query() — 搜 index → 读页面 → 调 LLM → 展示答案（可选保存为页面）
+
 - lint() — 读全部页面 → 调 LLM → 展示报告
 
 **关键认知**：Engine 做的是「体力活」（文件 I/O、解析、index 维护），LLM 做的是「脑力活」（理解内容、写文章、找联系）。这种分工是这个架构的核心。
@@ -97,5 +101,15 @@ config.yaml              — 所有可配置项
 
 ### reflection: 
 
+### 产出
+
+词条简介的末尾几乎都将完整的句子从中截断了。
+
+```
+[[awesome-sysy-repo.md]] — The **awesome-sysy** repository is a GitHub repository associated with the PKU compiler course. It c
+```
+
+写了这么多，没有什么阅读欲望。
 
 
+## 
