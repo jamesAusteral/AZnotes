@@ -2269,21 +2269,51 @@
 <hr />
 <h2 id="a-aris-wiki">A. ARIS 的 Wiki 架构分析</h2>
 <p>ARIS（Auto-Research-In-Sleep，仓库 wanshuiyin/Auto-claude-code-research-in-sleep，约 11.7k stars，配套技术报告 arXiv:2605.03042）是一套<strong>纯 Markdown 的 Claude Code skill 集合</strong>，目标是"让 Claude Code 在你睡觉时自动做 ML 科研"。它的"Research Wiki / Persistent Research Memory"是 Karpathy LLM Wiki 思想在"科研记忆"场景的落地。</p>
-<p><strong>它的持久化记忆是什么设计？</strong>
-- 根目录为 <code>research-wiki/</code>，通过 <code>/research-wiki init</code> 创建。
-- 跟踪<strong>四种实体（entity types）</strong>：papers（论文）、ideas（想法）、experiments（实验）、claims（论断），存为带 canonical node ID 的结构化 Markdown 页面。
-- <strong>八种 typed relationship（构成轻量知识图谱）</strong>，arXiv 报告原文为："Eight typed relationships (extends, contradicts, addresses_gap, inspired_by, tested_by, supports, invalidates, supersedes) form a lightweight knowledge graph." 例如 idea --inspired_by--&gt; paper、experiment --supports/invalidates--&gt; claim、paper --supersedes--&gt; paper。
-- 关键设计是<strong>保留被否决的想法</strong>："Failed ideas become a banlist; validated claims become foundations for the next ideation round, converting one-shot research into spiral learning."（失败 idea 变禁令清单，验证过的 claim 变下一轮基础，把一次性研究变螺旋式学习）。
-- 子命令：<code>init / ingest / query / lint / stats</code>。<code>query</code> 会重建一个 <code>query_pack.md</code>（上限约 8000 字符）的压缩摘要喂给 <code>/idea-creator</code>。
-- <strong>file-system-as-state（文件系统即状态）</strong>：所有会话状态放在可版本化的纯文本文件里，而非内存缓存或外部数据库；配合 checkpoint-based recovery。</p>
-<p><strong>用了哪些技术？</strong>
-- 辅助脚本 <code>tools/research_wiki.py</code>（纯 Python 标准库、无依赖，约 767 行），暴露 canonical <code>ingest_paper</code> API，采用 <code>.aris/tools/ → tools/ → $ARIS_REPO/tools/</code> 的三层 resolver chain。
-- "sleep 时的任务调度"本质是<strong>自主夜间研究循环</strong>（plan/draft/对抗审/迭代/持久化），靠 wiki 在多次会话间保持状态。
-- <code>/meta-optimize</code> 自进化：用 Claude Code hooks 被动记录每次 skill 调用、工具调用、失败、参数覆盖到 <code>.aris/meta/events.jsonl</code>，积累 ≥5 次完整运行后分析并提出对 SKILL.md 的<strong>最小 diff 补丁</strong>，经 GPT 跨模型 reviewer 审查 + 用户批准后才应用。它只优化"框架"（SKILL.md/默认参数/收敛规则），<strong>不优化研究产物本身</strong>。
-- <strong>跨模型评审</strong>：Claude Code 做 executor（执行），外部 GPT/Codex（GPT-5.5 xhigh）经 MCP 做 critical reviewer；论点是"自审是 stochastic、跨模型审是 adversarial，更难被钻空子"。claim 只有通过跨模型审计（experiment-audit → result-to-claim → paper-claim-audit 三级级联）才能"硬化"成 wiki 事实——其设计原则原文是"a loop can DRIVE, it cannot ACQUIT"（循环只能驱动、不能裁定）。</p>
-<p><strong>与 Karpathy LLM Wiki 的差异与启发</strong>：
-- Karpathy 版是<strong>通用个人知识库</strong>（raw→wiki→schema 三层，ingest/query/lint 三操作，刻意保持抽象、模块化、可选）；ARIS 是<strong>垂直科研场景</strong>的实例化，额外加了 typed edges、claim 状态机、跨模型审计、自进化外循环。
-- 启发点：① 用 typed edges 把"矛盾/支持/取代"变成可查询结构，而非散落在散文里；② 把"失败/否决"也作为一等公民记忆（anti-repetition）；③ 用独立的第二个模型做"四眼审查"提升可信度；④ 用 hooks 被动采集运行数据来自我改进 schema。</p>
+<p><strong>它的持久化记忆是什么设计？</strong></p>
+<ul>
+<li>
+<p>根目录为 <code>research-wiki/</code>，通过 <code>/research-wiki init</code> 创建。</p>
+</li>
+<li>
+<p>跟踪<strong>四种实体（entity types）</strong>：papers（论文）、ideas（想法）、experiments（实验）、claims（论断），存为带 canonical node ID 的结构化 Markdown 页面。</p>
+</li>
+<li>
+<p><strong>八种 typed relationship（构成轻量知识图谱）</strong>，arXiv 报告原文为："Eight typed relationships (extends, contradicts, addresses_gap, inspired_by, tested_by, supports, invalidates, supersedes) form a lightweight knowledge graph." 例如 idea --inspired_by--&gt; paper、experiment --supports/invalidates--&gt; claim、paper --supersedes--&gt; paper。</p>
+</li>
+<li>
+<p>关键设计是<strong>保留被否决的想法</strong>："Failed ideas become a banlist; validated claims become foundations for the next ideation round, converting one-shot research into spiral learning."（失败 idea 变禁令清单，验证过的 claim 变下一轮基础，把一次性研究变螺旋式学习）。</p>
+</li>
+<li>
+<p>子命令：<code>init / ingest / query / lint / stats</code>。<code>query</code> 会重建一个 <code>query_pack.md</code>（上限约 8000 字符）的压缩摘要喂给 <code>/idea-creator</code>。</p>
+</li>
+<li>
+<p><strong>file-system-as-state（文件系统即状态）</strong>：所有会话状态放在可版本化的纯文本文件里，而非内存缓存或外部数据库；配合 checkpoint-based recovery。</p>
+</li>
+</ul>
+<p><strong>用了哪些技术？</strong></p>
+<ul>
+<li>
+<p>辅助脚本 <code>tools/research_wiki.py</code>（纯 Python 标准库、无依赖，约 767 行），暴露 canonical <code>ingest_paper</code> API，采用 <code>.aris/tools/ → tools/ → $ARIS_REPO/tools/</code> 的三层 resolver chain。</p>
+</li>
+<li>
+<p>"sleep 时的任务调度"本质是<strong>自主夜间研究循环</strong>（plan/draft/对抗审/迭代/持久化），靠 wiki 在多次会话间保持状态。</p>
+</li>
+<li>
+<p><code>/meta-optimize</code> 自进化：用 Claude Code hooks 被动记录每次 skill 调用、工具调用、失败、参数覆盖到 <code>.aris/meta/events.jsonl</code>，积累 ≥5 次完整运行后分析并提出对 SKILL.md 的<strong>最小 diff 补丁</strong>，经 GPT 跨模型 reviewer 审查 + 用户批准后才应用。它只优化"框架"（SKILL.md/默认参数/收敛规则），<strong>不优化研究产物本身</strong>。</p>
+</li>
+<li>
+<p><strong>跨模型评审</strong>：Claude Code 做 executor（执行），外部 GPT/Codex（GPT-5.5 xhigh）经 MCP 做 critical reviewer；论点是"自审是 stochastic、跨模型审是 adversarial，更难被钻空子"。claim 只有通过跨模型审计（experiment-audit → result-to-claim → paper-claim-audit 三级级联）才能"硬化"成 wiki 事实——其设计原则原文是"a loop can DRIVE, it cannot ACQUIT"（循环只能驱动、不能裁定）。</p>
+</li>
+</ul>
+<p><strong>与 Karpathy LLM Wiki 的差异与启发</strong>：</p>
+<ul>
+<li>
+<p>Karpathy 版是<strong>通用个人知识库</strong>（raw→wiki→schema 三层，ingest/query/lint 三操作，刻意保持抽象、模块化、可选）；ARIS 是<strong>垂直科研场景</strong>的实例化，额外加了 typed edges、claim 状态机、跨模型审计、自进化外循环。</p>
+</li>
+<li>
+<p>启发点：① 用 typed edges 把"矛盾/支持/取代"变成可查询结构，而非散落在散文里；② 把"失败/否决"也作为一等公民记忆（anti-repetition）；③ 用独立的第二个模型做"四眼审查"提升可信度；④ 用 hooks 被动采集运行数据来自我改进 schema。</p>
+</li>
+</ul>
 <blockquote>
 <p>注：arXiv 报告把 reviewer 默认模型写作 GPT-5.4，而当前 README/运行时默认已于 2026-05-14 升级为 GPT-5.5，属论文与活仓库的版本差，非矛盾。</p>
 </blockquote>
@@ -2683,107 +2713,285 @@
 <p><strong>推荐学习顺序</strong>：① 高必要性低难度（搭起能跑的最简 wiki）→ ② 高必要性高难度（让它检索好、答得可信）→ ③ 低必要性按你的实际瓶颈选学（wiki 变大→检索/向量库；多 agent→并发/OS；想做产品→成本/Benchmark）。</p>
 <hr />
 <h2 id="_5">思维导图式学习路线（分阶段）</h2>
-<p><strong>阶段一（0–2 周）：跑通最简 LLM Wiki</strong>
-- 读懂 Karpathy gist 全文 + 看 Karpathy《Software Is Changing》。
-- 装 Claude Code + Obsidian；建 <code>raw/ wiki/ CLAUDE.md</code>。
-- 把 gist 贴给 Claude Code，协作实例化 schema 与目录。
-- 手动 ingest 5–10 个源，跑通 query、跑一次 lint；用 git 提交每次变更。
-- 学：Markdown/Wikilinks、Git 基础、Prompt/Context Engineering、无状态 API、index.md/log.md 模式。
-- <strong>里程碑</strong>：你能对着自己的 wiki 问问题并得到带引用的答案。</p>
-<p><strong>阶段二（2–8 周）：检索 + 质量保证</strong>
-- 当 wiki 接近上下文上限时引入 qmd（hybrid 检索 + rerank），包成 MCP server 供 Claude Code 调用。
-- 学 chunking、embedding、RAG pipeline、re-ranking。
-- 加质量层：provenance（源 hash/行号）、幻觉检测（must-cite + 采样一致性）、bias-aware lint、五态页面生命周期。
-- 设计你自己的最小 eval（见 F 节）。
-- 学：MCP（DeepLearning.AI 课）、Context Engineering（Anthropic 文）、RAGAS。
-- <strong>里程碑</strong>：wiki 上百源仍检索准、答案可溯源、有一套可重复的评测。</p>
-<p><strong>阶段三（2–6 月）：系统工程深入（按需）</strong>
-- 多 agent 并发：append-only + 按文件分区 + worktree 隔离 + 语义去重；踩 git lock 坑并解决。
-- OS 层：实现 atomic_write（临时文件→fsync→rename→fsync 目录）、用 SQLite WAL 存元数据、flock 互斥。
-- 选学 GraphRAG/typed-edge 图、图数据库、成本/延迟优化（per-role provider）。
-- 想做"深度/护城河"：往下走系统工程→推理框架→微调（见 C 节）。
-- 学：JYY OS 并发(lect13-21)+持久化(lect22-26)+数据库(lect27)。
-- <strong>里程碑</strong>：你的 wiki 能在多 agent 并发写入下不丢数据、崩溃可恢复，并有成本/性能数据。</p>
+<p><strong>阶段一（0–2 周）：跑通最简 LLM Wiki</strong></p>
+<ul>
+<li>
+<p>读懂 Karpathy gist 全文 + 看 Karpathy《Software Is Changing》。</p>
+</li>
+<li>
+<p>装 Claude Code + Obsidian；建 <code>raw/ wiki/ CLAUDE.md</code>。</p>
+</li>
+<li>
+<p>把 gist 贴给 Claude Code，协作实例化 schema 与目录。</p>
+</li>
+<li>
+<p>手动 ingest 5–10 个源，跑通 query、跑一次 lint；用 git 提交每次变更。</p>
+</li>
+<li>
+<p>学：Markdown/Wikilinks、Git 基础、Prompt/Context Engineering、无状态 API、index.md/log.md 模式。</p>
+</li>
+<li>
+<p><strong>里程碑</strong>：你能对着自己的 wiki 问问题并得到带引用的答案。</p>
+</li>
+</ul>
+<p><strong>阶段二（2–8 周）：检索 + 质量保证</strong></p>
+<ul>
+<li>
+<p>当 wiki 接近上下文上限时引入 qmd（hybrid 检索 + rerank），包成 MCP server 供 Claude Code 调用。</p>
+</li>
+<li>
+<p>学 chunking、embedding、RAG pipeline、re-ranking。</p>
+</li>
+<li>
+<p>加质量层：provenance（源 hash/行号）、幻觉检测（must-cite + 采样一致性）、bias-aware lint、五态页面生命周期。</p>
+</li>
+<li>
+<p>设计你自己的最小 eval（见 F 节）。</p>
+</li>
+<li>
+<p>学：MCP（DeepLearning.AI 课）、Context Engineering（Anthropic 文）、RAGAS。</p>
+</li>
+<li>
+<p><strong>里程碑</strong>：wiki 上百源仍检索准、答案可溯源、有一套可重复的评测。</p>
+</li>
+</ul>
+<p><strong>阶段三（2–6 月）：系统工程深入（按需）</strong></p>
+<ul>
+<li>
+<p>多 agent 并发：append-only + 按文件分区 + worktree 隔离 + 语义去重；踩 git lock 坑并解决。</p>
+</li>
+<li>
+<p>OS 层：实现 atomic_write（临时文件→fsync→rename→fsync 目录）、用 SQLite WAL 存元数据、flock 互斥。</p>
+</li>
+<li>
+<p>选学 GraphRAG/typed-edge 图、图数据库、成本/延迟优化（per-role provider）。</p>
+</li>
+<li>
+<p>想做"深度/护城河"：往下走系统工程→推理框架→微调（见 C 节）。</p>
+</li>
+<li>
+<p>学：JYY OS 并发(lect13-21)+持久化(lect22-26)+数据库(lect27)。</p>
+</li>
+<li>
+<p><strong>里程碑</strong>：你的 wiki 能在多 agent 并发写入下不丢数据、崩溃可恢复，并有成本/性能数据。</p>
+</li>
+</ul>
 <hr />
 <h2 id="c">C. 护城河与深度问题：纯应用层够不够深？</h2>
-<p><strong>当前 LLM 应用开发者的护城河通常来自哪里？</strong>
-- <strong>数据飞轮</strong>：用户交互持续产生专有反馈数据，回灌让系统越用越好（Cursor 的代码补全、Perplexity 的搜索）——竞品没有你的用户就复制不出你的数据集。
-- <strong>领域知识 / 垂直深度</strong>：法律、金融、医疗等专有/受监管数据 + forward-deployed 团队把"没写在网上的脏流程"映射进产品（Harvey 据报道 ARR 约 $195M、估值 $8-11B；Palantir）。
-- <strong>工作流深度集成 / 切换成本</strong>：深嵌企业流程、6-12 月才能 pilot 完，换供应商等于重做（Cursor 索引整个 repo、多文件事务）。
-- <strong>系统工程能力 / 基础设施控制</strong>：模型选择、微调、GPU 成本优化、检索策略——是"渲染管线"级别的硬工程。
-- <strong>算法创新</strong>：在检索、记忆、agent 架构上的真创新。</p>
-<p><strong>纯"调 API + prompt 工程"的护城河上限在哪？</strong>
-- 极低。多篇 2025-2026 投资/工程分析的共识："prompt 不是专有的，是任何人系统测试就能逆向的文本串"；"能否让技术用户把你的核心 prompt 贴进 ChatGPT 就拿到 80% 输出？能=你就是个 wrapper"。
-- 风险：① 被基础模型直接吞掉（新版模型自带你的功能）；② 毛利被 API 涨价挤压（传统 SaaS 70-90% 毛利，wrapper 据业内估算 50-60%，且 OpenAI 2025 年内多次涨价）；③ 大量 wrapper 据业内预测将在 2026 年消亡（一说约 90%）。
-- Karpathy 框架印证：Software 3.0 里 LLM 是"操作系统/计算新底座"，"your prompts are now programs that program the LLM"、"the context window is your program, the LLM is the interpreter"——单纯写 prompt 等于在租来的地上盖楼，地主随时拆。</p>
-<p><strong>想"做深"的路径（从应用层向下）：</strong>
-1. <strong>系统工程</strong>：把 wiki 做成可靠系统——并发安全、崩溃恢复、成本/延迟优化、可观测性。这是本报告 Layer 6 + OS 知识的价值所在。
-2. <strong>检索/记忆算法</strong>：从调 qmd 到自己实现 hybrid+rerank、GraphRAG、typed-memory（MemGPT/Letta 式分层记忆）。
-3. <strong>推理框架</strong>：理解 KV cache、批处理、量化、本地推理（Ollama/LM Studio），做 per-role provider 成本优化。
-4. <strong>模型微调</strong>：垂直领域 LoRA/微调（注意：Karpathy 评论区 mikhashev 的 52 次实验显示，&lt;10M 参数模型 LoRA 知识注入几乎不可行——top-1 recall 很快归零，需 7B+ 模型才稳定）。
-5. <strong>理论研究</strong>：读论文、做评测、甚至像 ARIS/AutoSci 那样让 agent 自己做研究。</p>
+<p><strong>当前 LLM 应用开发者的护城河通常来自哪里？</strong></p>
+<ul>
+<li>
+<p><strong>数据飞轮</strong>：用户交互持续产生专有反馈数据，回灌让系统越用越好（Cursor 的代码补全、Perplexity 的搜索）——竞品没有你的用户就复制不出你的数据集。</p>
+</li>
+<li>
+<p><strong>领域知识 / 垂直深度</strong>：法律、金融、医疗等专有/受监管数据 + forward-deployed 团队把"没写在网上的脏流程"映射进产品（Harvey 据报道 ARR 约 $195M、估值 $8-11B；Palantir）。</p>
+</li>
+<li>
+<p><strong>工作流深度集成 / 切换成本</strong>：深嵌企业流程、6-12 月才能 pilot 完，换供应商等于重做（Cursor 索引整个 repo、多文件事务）。</p>
+</li>
+<li>
+<p><strong>系统工程能力 / 基础设施控制</strong>：模型选择、微调、GPU 成本优化、检索策略——是"渲染管线"级别的硬工程。</p>
+</li>
+<li>
+<p><strong>算法创新</strong>：在检索、记忆、agent 架构上的真创新。</p>
+</li>
+</ul>
+<p><strong>纯"调 API + prompt 工程"的护城河上限在哪？</strong></p>
+<ul>
+<li>
+<p>极低。多篇 2025-2026 投资/工程分析的共识："prompt 不是专有的，是任何人系统测试就能逆向的文本串"；"能否让技术用户把你的核心 prompt 贴进 ChatGPT 就拿到 80% 输出？能=你就是个 wrapper"。</p>
+</li>
+<li>
+<p>风险：① 被基础模型直接吞掉（新版模型自带你的功能）；② 毛利被 API 涨价挤压（传统 SaaS 70-90% 毛利，wrapper 据业内估算 50-60%，且 OpenAI 2025 年内多次涨价）；③ 大量 wrapper 据业内预测将在 2026 年消亡（一说约 90%）。</p>
+</li>
+<li>
+<p>Karpathy 框架印证：Software 3.0 里 LLM 是"操作系统/计算新底座"，"your prompts are now programs that program the LLM"、"the context window is your program, the LLM is the interpreter"——单纯写 prompt 等于在租来的地上盖楼，地主随时拆。</p>
+</li>
+</ul>
+<p><strong>想"做深"的路径（从应用层向下）：</strong></p>
+<ol>
+<li>
+<p><strong>系统工程</strong>：把 wiki 做成可靠系统——并发安全、崩溃恢复、成本/延迟优化、可观测性。这是本报告 Layer 6 + OS 知识的价值所在。</p>
+</li>
+<li>
+<p><strong>检索/记忆算法</strong>：从调 qmd 到自己实现 hybrid+rerank、GraphRAG、typed-memory（MemGPT/Letta 式分层记忆）。</p>
+</li>
+<li>
+<p><strong>推理框架</strong>：理解 KV cache、批处理、量化、本地推理（Ollama/LM Studio），做 per-role provider 成本优化。</p>
+</li>
+<li>
+<p><strong>模型微调</strong>：垂直领域 LoRA/微调（注意：Karpathy 评论区 mikhashev 的 52 次实验显示，&lt;10M 参数模型 LoRA 知识注入几乎不可行——top-1 recall 很快归零，需 7B+ 模型才稳定）。</p>
+</li>
+<li>
+<p><strong>理论研究</strong>：读论文、做评测、甚至像 ARIS/AutoSci 那样让 agent 自己做研究。</p>
+</li>
+</ol>
 <p><strong>结论（取立场）</strong>：对个人学习者，LLM Wiki 是绝佳的"向下钻"载体——它从纯应用层（贴 gist 给 Claude Code）开始，但每一个"做大/做可靠"的需求都自然把你推向系统工程、检索算法、OS 持久化。护城河不在 prompt，而在你能把这套东西做成<strong>可靠、可溯源、可并发、成本可控</strong>的系统，以及你喂给它的<strong>专有数据 + 领域 schema</strong>。</p>
 <hr />
 <h2 id="d-vibe-coding">D. Vibe Coding 环境下如何真正学到东西</h2>
 <p><strong>核心原则：把 AI 当"会写代码的同事"，而非"黑盒答案机"。</strong> Karpathy 的"自主性滑块（autonomy slider）"是关键——按任务选择让 AI 多自主，而非全程托管。</p>
-<p><strong>具体方法论：</strong>
-1. <strong>理解优先于记忆</strong>：每次 AI 写完代码，先不接受，让它<strong>逐行解释</strong>，你能复述了再合并。CS146S 的核心论点："You won't be replaced by AI. You'll be replaced by a competent engineer who knows how to use AI."——execution 技能被 AI 接管，judgment 技能（分解问题、架构决策、验证）仍是人的。
-2. <strong>代码拆解 + 逆向理解</strong>：让 AI 写完后，删掉关键函数让自己手写一遍再对比；或让 AI 给你出"这段代码为什么这样写"的小测验。
-3. <strong>手写关键部分</strong>：对核心机制（如 atomic_write 的四步、agent loop 的收敛条件、hybrid 检索的 RRF 融合）坚持自己手敲一遍——这些是"判断力"所在。
-4. <strong>苏格拉底式学习（防幻觉投毒）</strong>：采用 Karpathy gist 评论区 Archimondstat 提出的 "Socrates–Plato–Bayes" 法——<strong>先你自己提出假设/解释→让 AI 当挑战者找漏洞/反例→你按贝叶斯式更新→只有经得起挑战的想法才进 wiki</strong>。避免 wiki 沦为"AI 生成但你从未内化的幻觉笔记堆"（他用概率论证：每条笔记幻觉概率非零时，笔记数增长会使"至少一条幻觉"概率趋近 1）。
-5. <strong>间隔重复内化概念（Andy Matuschak）</strong>：把学到的关键概念写成 spaced repetition prompts——好 prompt 应"connect and relate ideas"而非孤立细节；"deep understanding requires (and is a result of) intense personal connection"。用 Anki/Orbit 复习 Layer 0-3 的核心概念。
-6. <strong>做你在乎的真问题（Richard Hamming《You and Your Research》）</strong>：选一个你真正想积累知识的领域（你的研究、你的爱好）来建 wiki——Hamming 强调做"重要问题"、保持"开放的门"、用复利式努力。真实动机让你愿意钻进原理。
-7. <strong>用 prompt 即源代码的纪律</strong>：把你和 AI 协作的关键 prompt/CLAUDE.md 也 git 版本化（CS146S：committing 生成代码却扔掉 prompt 等于"version-controlling the binary"而销毁源码）。</p>
+<p><strong>具体方法论：</strong></p>
+<ol>
+<li>
+<p><strong>理解优先于记忆</strong>：每次 AI 写完代码，先不接受，让它<strong>逐行解释</strong>，你能复述了再合并。CS146S 的核心论点："You won't be replaced by AI. You'll be replaced by a competent engineer who knows how to use AI."——execution 技能被 AI 接管，judgment 技能（分解问题、架构决策、验证）仍是人的。</p>
+</li>
+<li>
+<p><strong>代码拆解 + 逆向理解</strong>：让 AI 写完后，删掉关键函数让自己手写一遍再对比；或让 AI 给你出"这段代码为什么这样写"的小测验。</p>
+</li>
+<li>
+<p><strong>手写关键部分</strong>：对核心机制（如 atomic_write 的四步、agent loop 的收敛条件、hybrid 检索的 RRF 融合）坚持自己手敲一遍——这些是"判断力"所在。</p>
+</li>
+<li>
+<p><strong>苏格拉底式学习（防幻觉投毒）</strong>：采用 Karpathy gist 评论区 Archimondstat 提出的 "Socrates–Plato–Bayes" 法——<strong>先你自己提出假设/解释→让 AI 当挑战者找漏洞/反例→你按贝叶斯式更新→只有经得起挑战的想法才进 wiki</strong>。避免 wiki 沦为"AI 生成但你从未内化的幻觉笔记堆"（他用概率论证：每条笔记幻觉概率非零时，笔记数增长会使"至少一条幻觉"概率趋近 1）。</p>
+</li>
+<li>
+<p><strong>间隔重复内化概念（Andy Matuschak）</strong>：把学到的关键概念写成 spaced repetition prompts——好 prompt 应"connect and relate ideas"而非孤立细节；"deep understanding requires (and is a result of) intense personal connection"。用 Anki/Orbit 复习 Layer 0-3 的核心概念。</p>
+</li>
+<li>
+<p><strong>做你在乎的真问题（Richard Hamming《You and Your Research》）</strong>：选一个你真正想积累知识的领域（你的研究、你的爱好）来建 wiki——Hamming 强调做"重要问题"、保持"开放的门"、用复利式努力。真实动机让你愿意钻进原理。</p>
+</li>
+<li>
+<p><strong>用 prompt 即源代码的纪律</strong>：把你和 AI 协作的关键 prompt/CLAUDE.md 也 git 版本化（CS146S：committing 生成代码却扔掉 prompt 等于"version-controlling the binary"而销毁源码）。</p>
+</li>
+</ol>
 <p><strong>反模式（会导致学不到）</strong>：全程 YOLO 模式接受所有代码、从不读 diff、从不问"为什么"、把 wiki 当 AI 的垃圾场而非自己思考的结晶。</p>
 <hr />
 <h2 id="e-os-llm-wiki">E. OS/系统知识与 LLM Wiki 持久化的关系</h2>
-<p><strong>JYY OS 2026 大纲中与 LLM Wiki 直接相关的模块：</strong>
-- <strong>持久化（lect22-27）</strong>：设备与驱动、持久数据存储、文件系统 API、文件系统实现、<strong>数据库系统</strong>——直接对应 wiki 的落盘、原子写、崩溃恢复、SQLite 元数据。最高相关。
-- <strong>并发（lect13-21）</strong>：多处理器编程、互斥、同步、并发 Bugs、并行数据结构、异步编程、数据中心并发——对应多 agent 并发写入、文件锁、写入冲突。高相关。
-- <strong>虚拟化（lect5-12）</strong>：进程、地址空间、访问 OS 对象、UNIX Shell、C 标准库、链接加载——对应理解"agent 调 shell 工具/进程""文件描述符"等，中相关。其中 lect4 直接是《Scaling Law 和 Agentic AI》、lect8《终端和 UNIX Shell》对理解 Claude Code 这类工具底层很有帮助。</p>
-<p><strong>具体应用场景：</strong>
-- <strong>fsync / 原子写</strong>：agent 写 wiki 页时崩溃/断电，避免半截文件。正确做法（danluu《Files are hard》）：写临时文件→<code>fsync(temp)</code>→<code>rename(temp,target)</code>→<code>fsync(父目录)</code>；注意 rename 在崩溃语义下<strong>不原子</strong>，且少了父目录 fsync，重启后 rename 可能丢失。
-- <strong>WAL（Write-Ahead Log）</strong>：先把"要写什么"记到流水账再落盘，崩溃后重放——SQLite/Postgres 都靠它做崩溃一致性。LLM Wiki 的 log.md（append-only）就是一个朴素的 WAL 思想体现；可用 SQLite WAL 模式存元数据。
-- <strong>flock（文件锁）</strong>：单机多进程写同一文件（如 index.md）时互斥；git 的 <code>.git/index.lock</code> 就是这种机制。</p>
-<p><strong>并发 agent 写入崩溃时，OS 层的解决方案：</strong>
-- <strong>append-only + 按文件/分区分写</strong>：让并发写天然可交换，git 每次自动 merge（watsonrm 的核心方案，比加锁更优）。
-- <strong>worktree 隔离</strong>：每个 agent 独立工作目录/分支，冲突推迟到 merge 时由标准 git 工具检测；但注意 Claude Code 实测 3+ 并发 worktree 会争 <code>.git/config.lock</code> 失败（issue #34645/#55724），需串行化或重试退避。
-- <strong>OCC（乐观并发控制）+ 块级 UUID</strong>：MarcoPorcellato 用 Logseq 块级 AST + UUID + mmap OCC 锁让 LLM 安全地后台改笔记而不损坏。
-- <strong>崩溃恢复</strong>：WAL 重放 + checkpoint；git 本身的 commit 即天然 checkpoint。</p>
-<p><strong>结论：学 JYY OS 课对实现 LLM Wiki 的 ROI 是高还是低？</strong>
-- <strong>对"最简单机个人 wiki"：ROI 低</strong>——你只需 git + 一个 atomic_write 函数，不必系统学 OS。
-- <strong>对"多 agent 并发 + 崩溃恢复 + 想做可靠系统"：ROI 高</strong>，且这正是把你和"只会调 API 的人"区分开的护城河（见 C 节）。
-- <strong>优先学的模块</strong>：① 持久化里的"文件系统 API / 文件系统实现 / 数据库系统"（lect24-27）——直接解决落盘可靠性；② 并发里的"互斥/同步/并发 Bugs"（lect14-17）——直接解决多 agent 写入。其余按需。
-- <strong>务实建议</strong>：不必一开始就啃完整门课。先在实现 LLM Wiki 时遇到具体问题（"我的 wiki 并发写崩了"），再针对性看对应 lecture——这本身就是 D 节"做真问题"的最佳实践。</p>
+<p><strong>JYY OS 2026 大纲中与 LLM Wiki 直接相关的模块：</strong></p>
+<ul>
+<li>
+<p><strong>持久化（lect22-27）</strong>：设备与驱动、持久数据存储、文件系统 API、文件系统实现、<strong>数据库系统</strong>——直接对应 wiki 的落盘、原子写、崩溃恢复、SQLite 元数据。最高相关。</p>
+</li>
+<li>
+<p><strong>并发（lect13-21）</strong>：多处理器编程、互斥、同步、并发 Bugs、并行数据结构、异步编程、数据中心并发——对应多 agent 并发写入、文件锁、写入冲突。高相关。</p>
+</li>
+<li>
+<p><strong>虚拟化（lect5-12）</strong>：进程、地址空间、访问 OS 对象、UNIX Shell、C 标准库、链接加载——对应理解"agent 调 shell 工具/进程""文件描述符"等，中相关。其中 lect4 直接是《Scaling Law 和 Agentic AI》、lect8《终端和 UNIX Shell》对理解 Claude Code 这类工具底层很有帮助。</p>
+</li>
+</ul>
+<p><strong>具体应用场景：</strong></p>
+<ul>
+<li>
+<p><strong>fsync / 原子写</strong>：agent 写 wiki 页时崩溃/断电，避免半截文件。正确做法（danluu《Files are hard》）：写临时文件→<code>fsync(temp)</code>→<code>rename(temp,target)</code>→<code>fsync(父目录)</code>；注意 rename 在崩溃语义下<strong>不原子</strong>，且少了父目录 fsync，重启后 rename 可能丢失。</p>
+</li>
+<li>
+<p><strong>WAL（Write-Ahead Log）</strong>：先把"要写什么"记到流水账再落盘，崩溃后重放——SQLite/Postgres 都靠它做崩溃一致性。LLM Wiki 的 log.md（append-only）就是一个朴素的 WAL 思想体现；可用 SQLite WAL 模式存元数据。</p>
+</li>
+<li>
+<p><strong>flock（文件锁）</strong>：单机多进程写同一文件（如 index.md）时互斥；git 的 <code>.git/index.lock</code> 就是这种机制。</p>
+</li>
+</ul>
+<p><strong>并发 agent 写入崩溃时，OS 层的解决方案：</strong></p>
+<ul>
+<li>
+<p><strong>append-only + 按文件/分区分写</strong>：让并发写天然可交换，git 每次自动 merge（watsonrm 的核心方案，比加锁更优）。</p>
+</li>
+<li>
+<p><strong>worktree 隔离</strong>：每个 agent 独立工作目录/分支，冲突推迟到 merge 时由标准 git 工具检测；但注意 Claude Code 实测 3+ 并发 worktree 会争 <code>.git/config.lock</code> 失败（issue #34645/#55724），需串行化或重试退避。</p>
+</li>
+<li>
+<p><strong>OCC（乐观并发控制）+ 块级 UUID</strong>：MarcoPorcellato 用 Logseq 块级 AST + UUID + mmap OCC 锁让 LLM 安全地后台改笔记而不损坏。</p>
+</li>
+<li>
+<p><strong>崩溃恢复</strong>：WAL 重放 + checkpoint；git 本身的 commit 即天然 checkpoint。</p>
+</li>
+</ul>
+<p><strong>结论：学 JYY OS 课对实现 LLM Wiki 的 ROI 是高还是低？</strong></p>
+<ul>
+<li>
+<p><strong>对"最简单机个人 wiki"：ROI 低</strong>——你只需 git + 一个 atomic_write 函数，不必系统学 OS。</p>
+</li>
+<li>
+<p><strong>对"多 agent 并发 + 崩溃恢复 + 想做可靠系统"：ROI 高</strong>，且这正是把你和"只会调 API 的人"区分开的护城河（见 C 节）。</p>
+</li>
+<li>
+<p><strong>优先学的模块</strong>：① 持久化里的"文件系统 API / 文件系统实现 / 数据库系统"（lect24-27）——直接解决落盘可靠性；② 并发里的"互斥/同步/并发 Bugs"（lect14-17）——直接解决多 agent 写入。其余按需。</p>
+</li>
+<li>
+<p><strong>务实建议</strong>：不必一开始就啃完整门课。先在实现 LLM Wiki 时遇到具体问题（"我的 wiki 并发写崩了"），再针对性看对应 lecture——这本身就是 D 节"做真问题"的最佳实践。</p>
+</li>
+</ul>
 <hr />
 <h2 id="f-benchmark">F. Benchmark 问题</h2>
-<p><strong>LLM Wiki 目前有直接可用的 Benchmark 吗？——几乎没有。</strong>
-- 原因：LLM Wiki 是一个<strong>新提出的模式（Karpathy gist 创建于 2026 年 4 月 4 日）</strong>，且高度个性化（每个人的 raw 源、schema、领域都不同），没有统一任务集与标准答案；它又介于"RAG / agent 记忆 / 知识管理"之间，不完全属于任何已有 benchmark 范畴。</p>
-<p><strong>可借鉴的相关领域 Benchmark：</strong>
-- <strong>RAG 评测</strong>：
-  - <strong>RAGAS</strong>：无需人工标注，LLM-as-judge 给出 faithfulness（答案是否忠于检索内容/防幻觉）、answer relevancy、context precision、context recall 四大指标。最适合直接拿来评 wiki 的 query 质量；社区建议从 Faithfulness + Context Recall 两个高信号指标入手。
-  - <strong>BEIR</strong>：跨域检索基准，衡量检索器在不同领域的泛化（评 Layer 2 检索质量）。
-- <strong>记忆系统评测</strong>：
-  - <strong>MemGPT 论文（arXiv:2310.08560）</strong>方法：多会话对话保持知识、长文档 QA、嵌套 key-value 多跳检索。
-  - <strong>LoCoMo</strong>：长对话问答检索基准；<strong>LongMemEval</strong>：测时序/多跳/知识更新的长期记忆检索。
-  - <strong>Letta Leaderboard / Letta Filesystem</strong>：专测 agentic 记忆管理；据 Letta 官方博客《Benchmarking AI Agent Memory: Is a Filesystem All You Need?》(2025-08)，"Letta agents running on gpt-4o-mini achieve 74.0% accuracy on LoCoMo by simply storing conversation histories in files"，高于 Mem0 graph 变体的 68.5%——这恰恰印证了 Karpathy"文件系统即记忆"的思路。
-- <strong>知识图谱 QA</strong>：WebQSP 等（评 GraphRAG/typed-edge 检索）。</p>
-<p><strong>为自己的 LLM Wiki 设计 Benchmark 应评估哪些维度：</strong>
-1. <strong>准确率（Accuracy / Faithfulness）</strong>：答案是否忠于源、有无幻觉（借 RAGAS faithfulness）。
-2. <strong>召回率（Recall）</strong>：回答所需信息是否都被检索到（context recall）。
-3. <strong>精确率（Precision）</strong>：检索回来的内容有多少真相关（context precision）。
-4. <strong>幻觉率（Hallucination rate）</strong>：无源支撑的 claim 占比（采样一致性 + must-cite 检查）。
-5. <strong>更新延迟（Update latency / staleness）</strong>：源变更后 wiki 多久反映（provenance hash 比对）。
-6. <strong>成本（Cost）</strong>：每次 ingest/query 的 token×单价。
-7. <strong>延迟（Latency）</strong>：query 端到端响应时间。
-- 可选：<strong>一致性</strong>（同一问题多次问答案是否稳定）、<strong>矛盾检测率</strong>（lint 能否抓出注入的矛盾）。</p>
-<p><strong>用 Claude Code 快速搭最小 eval 框架：</strong>
-1. 让 Claude Code 生成一个"golden 问答集"：从你的 raw 源里抽 20-30 个有标准答案的问题（含需跨多页综合的多跳问题）。
-2. 写一个脚本：对每个问题跑 wiki query → 记录答案、引用、token、耗时。
-3. 用 LLM-as-judge（可用第二个模型做四眼，仿 ARIS 跨模型审）打分 faithfulness/relevancy；用规则检查"每条 claim 是否有引用"。
-4. 故意往 raw 里塞一条与现有内容矛盾的源，跑 lint，看是否被抓出（测矛盾检测）。
-5. 把结果写成 <code>eval_report.md</code> 进 git，每次改 schema/检索后重跑做 A/B（仿 ARIS 的 golden 测试纪律）。
-- 直接用现成工具：<code>pip install ragas</code>，按其 SingleTurnSample 接口喂入 question/answer/contexts 即可得四指标；RAGAS 原生支持 LangSmith/Langfuse 观测。</p>
+<p><strong>LLM Wiki 目前有直接可用的 Benchmark 吗？——几乎没有。</strong></p>
+<ul>
+<li>原因：LLM Wiki 是一个<strong>新提出的模式（Karpathy gist 创建于 2026 年 4 月 4 日）</strong>，且高度个性化（每个人的 raw 源、schema、领域都不同），没有统一任务集与标准答案；它又介于"RAG / agent 记忆 / 知识管理"之间，不完全属于任何已有 benchmark 范畴。</li>
+</ul>
+<p><strong>可借鉴的相关领域 Benchmark：</strong></p>
+<ul>
+<li>
+<p><strong>RAG 评测</strong>：</p>
+</li>
+<li>
+<p><strong>RAGAS</strong>：无需人工标注，LLM-as-judge 给出 faithfulness（答案是否忠于检索内容/防幻觉）、answer relevancy、context precision、context recall 四大指标。最适合直接拿来评 wiki 的 query 质量；社区建议从 Faithfulness + Context Recall 两个高信号指标入手。</p>
+</li>
+<li>
+<p><strong>BEIR</strong>：跨域检索基准，衡量检索器在不同领域的泛化（评 Layer 2 检索质量）。</p>
+</li>
+<li>
+<p><strong>记忆系统评测</strong>：</p>
+</li>
+<li>
+<p><strong>MemGPT 论文（arXiv:2310.08560）</strong>方法：多会话对话保持知识、长文档 QA、嵌套 key-value 多跳检索。</p>
+</li>
+<li>
+<p><strong>LoCoMo</strong>：长对话问答检索基准；<strong>LongMemEval</strong>：测时序/多跳/知识更新的长期记忆检索。</p>
+</li>
+<li>
+<p><strong>Letta Leaderboard / Letta Filesystem</strong>：专测 agentic 记忆管理；据 Letta 官方博客《Benchmarking AI Agent Memory: Is a Filesystem All You Need?》(2025-08)，"Letta agents running on gpt-4o-mini achieve 74.0% accuracy on LoCoMo by simply storing conversation histories in files"，高于 Mem0 graph 变体的 68.5%——这恰恰印证了 Karpathy"文件系统即记忆"的思路。</p>
+</li>
+<li>
+<p><strong>知识图谱 QA</strong>：WebQSP 等（评 GraphRAG/typed-edge 检索）。</p>
+</li>
+</ul>
+<p><strong>为自己的 LLM Wiki 设计 Benchmark 应评估哪些维度：</strong></p>
+<ol>
+<li>
+<p><strong>准确率（Accuracy / Faithfulness）</strong>：答案是否忠于源、有无幻觉（借 RAGAS faithfulness）。</p>
+</li>
+<li>
+<p><strong>召回率（Recall）</strong>：回答所需信息是否都被检索到（context recall）。</p>
+</li>
+<li>
+<p><strong>精确率（Precision）</strong>：检索回来的内容有多少真相关（context precision）。</p>
+</li>
+<li>
+<p><strong>幻觉率（Hallucination rate）</strong>：无源支撑的 claim 占比（采样一致性 + must-cite 检查）。</p>
+</li>
+<li>
+<p><strong>更新延迟（Update latency / staleness）</strong>：源变更后 wiki 多久反映（provenance hash 比对）。</p>
+</li>
+<li>
+<p><strong>成本（Cost）</strong>：每次 ingest/query 的 token×单价。</p>
+</li>
+<li>
+<p><strong>延迟（Latency）</strong>：query 端到端响应时间。</p>
+</li>
+<li>
+<p>可选：<strong>一致性</strong>（同一问题多次问答案是否稳定）、<strong>矛盾检测率</strong>（lint 能否抓出注入的矛盾）。</p>
+</li>
+</ol>
+<p><strong>用 Claude Code 快速搭最小 eval 框架：</strong></p>
+<ol>
+<li>
+<p>让 Claude Code 生成一个"golden 问答集"：从你的 raw 源里抽 20-30 个有标准答案的问题（含需跨多页综合的多跳问题）。</p>
+</li>
+<li>
+<p>写一个脚本：对每个问题跑 wiki query → 记录答案、引用、token、耗时。</p>
+</li>
+<li>
+<p>用 LLM-as-judge（可用第二个模型做四眼，仿 ARIS 跨模型审）打分 faithfulness/relevancy；用规则检查"每条 claim 是否有引用"。</p>
+</li>
+<li>
+<p>故意往 raw 里塞一条与现有内容矛盾的源，跑 lint，看是否被抓出（测矛盾检测）。</p>
+</li>
+<li>
+<p>把结果写成 <code>eval_report.md</code> 进 git，每次改 schema/检索后重跑做 A/B（仿 ARIS 的 golden 测试纪律）。</p>
+</li>
+<li>
+<p>直接用现成工具：<code>pip install ragas</code>，按其 SingleTurnSample 接口喂入 question/answer/contexts 即可得四指标；RAGAS 原生支持 LangSmith/Langfuse 观测。</p>
+</li>
+</ol>
 <hr />
 <h2 id="_6">参考与来源（均为真实链接）</h2>
 <ul>
@@ -2827,7 +3035,7 @@
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2026年6月10日 08:41:57 UTC">2026年6月10日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2026年6月14日 02:51:51 UTC">2026年6月14日</span>
   </span>
 
     
