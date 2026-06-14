@@ -11,3 +11,4 @@
 - [NJU OS（操作系统）](nju-os/index.md)
 - [Stanford CS336（大语言模型）](cs336/index.md)
 - [PKU 编译原理](pku-compiler/index.md)
+- [CS146s](CS146S/index.md)

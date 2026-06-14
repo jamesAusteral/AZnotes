@@ -102,6 +102,7 @@ nav:
         - courses/cs336/index.md
         - CS336 第 1 讲: courses/cs336/lecture-01.md
       - PKU 编译原理: courses/pku-compiler/index.md
+      - CS146S: coueses/CS146S/index.md
   - 实验记录:
       - labs/index.md
       - 示例 · NJU OS Lab: labs/nju-os/lab-01-example.md
