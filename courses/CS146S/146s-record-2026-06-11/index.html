@@ -415,6 +415,8 @@
       
         
       
+        
+      
     
     
     
@@ -617,6 +619,34 @@
     
   
     PKU 编译原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../coueses/CS146S/index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CS146S
   
 
     
@@ -1590,45 +1620,6 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#-stage-1-self-supervised-pretrainingcommon-crawlwikipediastackexchange-github-token-for" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        - Stage 1 — Self-supervised pretraining(自监督预训练):在海量公开数据(Common Crawl、Wikipedia、StackExchange、公开 GitHub 仓库)上学"语言和代码长什么样",规模是千亿到万亿+ token。此时你说"写个 for 循环",它只会续写出"可能出现在某段代码里"的东西。
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#-stage-2-supervised-finetuningsft-for-for" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        - Stage 2 — Supervised finetuning(监督微调,SFT):用几万到几十万条高质量的"指令-回答"对教它听懂指令。现在你说"写个 for 循环",它知道"哦,你要我给你一个 for 循环"。
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#-stage-3-preference-tuning-reward-model-for-idx-in-range10" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        - Stage 3 — Preference tuning(偏好微调):用人类对同一问题的多个回答的偏好对比,训练一个 reward model(奖励模型),让输出更符合人类偏好(有用、正确、可读)。现在它会给你 for idx in range(10): 这种地道的代码。
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="- Stage 3 — Preference tuning(偏好微调):用人类对同一问题的多个回答的偏好对比,训练一个 reward model(奖励模型),让输出更符合人类偏好(有用、正确、可读)。现在它会给你 for idx in range(10): 这种地道的代码。">
-      <ul class="md-nav__list">
-        
           <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1739,6 +1730,73 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#assignment1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assignment1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Assignment1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#k_shot_prompting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        k_shot_prompting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="k_shot_prompting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一版prompt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第二版prompt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        小模型的局限性，判定答案的规则
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1813,11 +1871,19 @@
 <p>token预测的贝叶斯公式揭示了为什么上下文长度这么重要。当然这也是这整门课唯一的公式。</p>
 <p>自注意力机制，参考transformer论文，链接待补充。</p>
 <p>LLM训练流程。</p>
-<h2 id="-stage-1-self-supervised-pretrainingcommon-crawlwikipediastackexchange-github-token-for">- <strong>Stage 1 — Self-supervised pretraining(自监督预训练)</strong>:在海量公开数据(Common Crawl、Wikipedia、StackExchange、公开 GitHub 仓库)上学"语言和代码长什么样",规模是<strong>千亿到万亿+ token</strong>。此时你说"写个 for 循环",它只会续写出"可能出现在某段代码里"的东西。</h2>
-<h2 id="-stage-2-supervised-finetuningsft-for-for">- <strong>Stage 2 — Supervised finetuning(监督微调,SFT)</strong>:用几万到几十万条<strong>高质量的"指令-回答"对</strong>教它<strong>听懂指令</strong>。现在你说"写个 for 循环",它知道"哦,你要我给你一个 for 循环"。</h2>
-<h2 id="-stage-3-preference-tuning-reward-model-for-idx-in-range10">- <strong>Stage 3 — Preference tuning(偏好微调)</strong>:用人类对同一问题的多个回答的偏好对比,训练一个 <strong>reward model(奖励模型)</strong>,让输出更符合人类偏好(有用、正确、可读)。现在它会给你 <code>for idx in range(10):</code> 这种地道的代码。</h2>
 <ul>
-<li><strong>Slide 18 — Reasoning models(推理模型)</strong>:再往上,用 <strong>chain-of-thought(思维链)</strong> 的推理轨迹、工具调用、对推理步骤的强化学习(RL),让模型学会"想一步、回溯、再想"。</li>
+<li>
+<p><strong>Stage 1 — Self-supervised pretraining(自监督预训练)</strong>:在海量公开数据(Common Crawl、Wikipedia、StackExchange、公开 GitHub 仓库)上学"语言和代码长什么样",规模是<strong>千亿到万亿+ token</strong>。此时你说"写个 for 循环",它只会续写出"可能出现在某段代码里"的东西。</p>
+</li>
+<li>
+<p><strong>Stage 2 — Supervised finetuning(监督微调,SFT)</strong>:用几万到几十万条<strong>高质量的"指令-回答"对</strong>教它<strong>听懂指令</strong>。现在你说"写个 for 循环",它知道"哦,你要我给你一个 for 循环"。</p>
+</li>
+<li>
+<p><strong>Stage 3 — Preference tuning(偏好微调)</strong>:用人类对同一问题的多个回答的偏好对比,训练一个 <strong>reward model(奖励模型)</strong>,让输出更符合人类偏好(有用、正确、可读)。现在它会给你 <code>for idx in range(10):</code> 这种地道的代码。</p>
+</li>
+<li>
+<p><strong>Slide 18 — Reasoning models(推理模型)</strong>:再往上,用 <strong>chain-of-thought(思维链)</strong> 的推理轨迹、工具调用、对推理步骤的强化学习(RL),让模型学会"想一步、回溯、再想"。</p>
+</li>
 </ul>
 <h3 id="_1">实战优缺点</h3>
 <ul>
@@ -1894,6 +1960,9 @@
 非常长，<strong>Almost like a loosely followed Isaac Asimov’s 3 laws of robotics</strong></p>
 <pre class="mermaid"><code>graph LR
     A[**System prompt**] --&gt; B[**User prompt**] --&gt; C[**Assistant prompt**]</code></pre>
+<details class="note">
+<summary>疑问：既然三者都是prompt，在输入token的时候仅仅被记号token分割，system prompt和user prompt有什么区别呢？</summary>
+</details>
 <h3 id="best-practices">Best Practices(最佳实践)</h3>
 <p>这是把六个技巧落地的操作守则:</p>
 <ul>
@@ -1914,6 +1983,213 @@
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>&lt;error&gt;
 </span></code></pre></div></p>
 <h2 id="readings">Readings</h2>
+<h2 id="assignment1">Assignment1</h2>
+<h3 id="k_shot_prompting">k_shot_prompting</h3>
+<p>我已深刻领悟到，prompt好好写其实是有用的。</p>
+<p>这个sys prompt自己写的话还真不太好写。</p>
+<h4 id="prompt">第一版prompt</h4>
+<p>我的第一版：
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>You are a word reverse expert, your mission is reverse every letters in a word accurately.
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Here are some examples:
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>1. input: hello, output: olleh
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>2. input: exclude, output: edulcxe
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>3. input: university, output: ytisrevinu
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>4. input: student, output: tneduts
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>5. input: accident, output: tnedicca
+</span></code></pre></div></p>
+<p>稍微有点蠢，但是测试结果只比zero shot好了一点点</p>
+<details class="note">
+<summary>zero shot测试结果：</summary>
+<p>Running test 1 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: tsetpuH</p>
+<p>Running test 2 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: statpuhctoS</p>
+<p>Running test 3 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: stauspoth</p>
+<p>Running test 4 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: statspohth</p>
+<p>Running test 5 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: sattotsuP</p>
+</details>
+<details class="note">
+<summary>第一版prompt测试结果：</summary>
+<p>Running test 1 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: ssutptoh</p>
+<p>Running test 2 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: satsuptth</p>
+<p>Running test 3 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: sattostpuH</p>
+<p>Running test 4 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: tsuxthp</p>
+<p>Running test 5 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: tsuxthp</p>
+</details>
+<p>cc给了我一个思路，模型是以token为单位看待文本的，所以一个单词他是以整体看待的，模型看不见单个字母。
+那该怎么办。</p>
+<h4 id="prompt_1">第二版prompt</h4>
+<p>经过和opus 4.8的一些讨论，我写了第二版sys prompt</p>
+<details class="note">
+<summary> 第二版prompt 结果：</summary>
+<p>YOUR_SYSTEM_PROMPT = """
+YOUR_SYSTEM_PROMPT = """</p>
+<p>You are a English word reverse expert, your role is to extract every letters in the given English word and reorder it to the opposite order. You only do this thing at a time.</p>
+<p>output role: no explination, only the reversed word. You can think the explination in your thinking process, bit never treat it as the output.</p>
+<p>Examples:</p>
+<p>task explination: you need to breakdown the word first by inserting blank space into it, making the word a bunch of independent tokens, then reverse the order.</p>
+<p>Lastly, delete the blank within every letters, generate the output without any blanks. The reversed version of word must have the same amount of letters as the original word.</p>
+<p>You can count the length of input word first, then examine the number of letters of the output with the lenth of the input word.</p>
+<p>Be careful of the letters that's same as the letter next it, like the 'tt' in 'letter'. Make sure do not miss any of them.</p>
+<p>As you just receive the token of a word, to know how to spell the word first, you might confirm the word itself from the token you receieve first, then break down the word,</p>
+<p>then reverse it, in the end, output the reversed word token by token, using the token of a single letter, like 'l', 'e ', 't', 't', 'e', 'r' in 'letter'.</p>
+<p>for example:</p>
+<p>hello -&gt; h e l l o -&gt; o l l e h -&gt; olleh</p>
+<p>letter -&gt; l e t t e r -&gt; r e t t e l -&gt; rettel</p>
+<p>banana -&gt; b a n a n a -&gt; a n a n a b -&gt; banana</p>
+<p>computer -&gt; c o m p u t e r -&gt; r e t u p m o c -&gt; retupmoc</p>
+<p>teststatus -&gt; t e s t s t a t u s -&gt; s u t a t s t s e t -&gt; sutatsstet</p>
+<p>this just shows you how to do the break down, below is the output format you must obey.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&lt;example&gt;
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>input: hello
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>output: olleh
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>&lt;/example&gt;
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>&lt;example&gt;
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>input: letter
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>output: rettel
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>&lt;/example&gt;
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>&lt;example&gt;
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>input: banana
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>output: ananab
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>&lt;/example&gt;
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>&lt;example&gt;
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>input: computer
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>output: retupmoc
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>&lt;/example&gt;
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a>
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>&lt;example&gt;
+</span><span id="__span-4-42"><a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a>
+</span><span id="__span-4-43"><a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>input: textstatus
+</span><span id="__span-4-44"><a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>
+</span><span id="__span-4-45"><a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a>output: sutatstxet
+</span><span id="__span-4-46"><a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>
+</span><span id="__span-4-47"><a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a>&lt;/example&gt;
+</span></code></pre></div>
+<p>"""</p>
+</details>
+<details class="note">
+<summary>prompt2 的输出结果依然靠运气</summary>
+<p>Running test 1 of 5</p>
+<p>Expected output: sutatsptth</p>
+<p>Actual output: statuts</p>
+<p>Running test 2 of 5</p>
+<p>SUCCESS</p>
+<p>这次两次尝试就成功了，其他的运行结果有一次就成功的，有5次都失败的。</p>
+</details>
+<p>然而我发现，只要把system prompt中的</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&lt;example&gt;
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>input: textstatus
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>output: sutatstxet
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>&lt;/example&gt;
+</span></code></pre></div>
+<p>这个例子换成其他例子，整个成功率都会大大降低。</p>
+<details class="note">
+<summary>Claude 的总结：</summary>
+<p>恭喜过关——你这版能成,核心就在你想通了"<strong>输出阶段也要 token by token、用单字母 token</strong>"那句话,等于把我们聊的"字符级分词"从输入端延伸到了输出端。下面按你能直接抄进笔记的形式总结。</p>
+<p><strong>为什么这版能成功</strong></p>
+<p><strong>你在 prompt 里同时修好了之前三处硬伤:</strong></p>
+<p>第一,<strong>你不再禁止模型展开了</strong>。之前那句"think silently、只输出答案"是致命的——小模型没有隐藏 thinking 区,不让它生成中间 token 就等于不让它算。你这版用 <code>hello -&gt; h e l l o -&gt; o l l e h -&gt; olleh</code> 这种<strong>箭头链</strong>把推理示范了出来,模型有了可模仿的"工作路径"。</p>
+<p>第二,<strong>你把"字符分离"教全了——输入端和输出端都教</strong>。最关键的是这句:输出时"token by token, using the token of a single letter, like 'l','e','t'..."。这逼模型在<strong>生成阶段</strong>也按单字母 token 吐,而不是去拼一个陌生的整词 token(<code>sutatsptth</code> 根本不是词表里的干净 token)。输入端拆字符 + 输出端拆字符,两头都对齐了字符粒度。</p>
+<p>第三,<strong>你显式打了"丢字母"这个靶</strong>:要求反转后字母数must等于原词、先数长度再核对、特别当心 <code>tt</code> 这种相邻重复。这几句直接针对小模型最爱犯的"漏字母/错序"。</p>
+<p><strong>为什么仍然不稳定(5 次有时全挂)</strong></p>
+<p>这部分你要写清楚,因为它<strong>不是你 prompt 的锅,是机制的天花板</strong>:</p>
+<ul>
+<li><strong><code>temperature=0.5</code> + 自回归采样</strong>:每一步都在概率分布里随机抽 token,任何一步抽偏就跑歪。这就是为什么"任意一次命中即算过"的设计要给你 5 次——它本来就是靠抽样兜底,不是靠每次都对。这正是 self-consistency 的同款思想。</li>
+<li><strong><code>mistral-nemo:12b</code> 是小模型</strong>:反转 10 字母、含密集重复(t×?、s×2)的词,本就在它能力边缘。prompt 写到完美也只能<strong>把命中概率拉高</strong>,做不到 100%。</li>
+<li><strong>链越长,错误累积越多</strong>:反转长词要正确生成十几个单字母 token,任何一个 token 错位,整段就 <code>!=</code> 期望值。长度越长,5 次全中的概率越低。</li>
+</ul>
+<p>一句话:<strong>你的 prompt 把"单次成功率"顶到了模型上限附近,剩下的波动是采样随机性 + 小模型能力的固有噪声。</strong></p>
+<p><strong>为什么换掉最后那个例子,效果会降</strong></p>
+<p>这点很值得记,因为它揭示了 k-shot 的一个真相:</p>
+<p>你原来的 <code>teststatus</code>/<code>textstatus</code> 例子,和考题 <code>httpstatus</code> <strong>几乎同构</strong>——都是"两个词拼起来的复合词 + 密集重复的 t/s + 10 字母"。模型做的不是"理解反转",更多是<strong>模仿离考题最近的那个例子的结构</strong>。这个例子就是它的"脚手架"。</p>
+<p>你一换,新例子如果<strong>结构离考题更远</strong>(长度不同、重复模式不同),脚手架就不那么贴合了,模型要"举一反三"的跨度变大,小模型最不擅长这个,命中率自然掉。</p>
+<p><strong>笔记里写成一条规律</strong>:k-shot 的效果高度依赖"<strong>示例与目标的结构相似度</strong>"——越是能力有限的模型,越是靠"贴近目标的范例"而非"抽象的规则"。这也呼应了我们之前说的:<strong>例子的质量/贴合度,比数量更重要。</strong></p>
+<p><strong>一个诚实的提醒(也写进笔记)</strong></p>
+<p>你这其实有点"<strong>用一个高度同构的例子,把考题的解法半喂给了模型</strong>"。这在作业里完全合法、也是 prompt engineering 的真功夫,但要意识到:它考验的是"你能不能造出贴合的范例",而<strong>不是模型真学会了通用的字符反转</strong>。换个完全不同的词,它大概率还是会栽。这正是这道题想让你体会的终极结论——<strong>LLM 的字符级操作能力有本质局限,prompt 能逼近上限,但搬不动这堵墙。</strong></p>
+<hr />
+<p>这一小节你吃得很透:从 tokenization、自回归生成,到 k-shot 与 CoT 的边界、技巧与约束的匹配,全都用一个失败-迭代-成功的真实过程串起来了。这比读十遍 slides 扎实得多。</p>
+<p>Week 1 的六个技巧你已经实打实啃下了 k-shot 这一个最硬的,剩下的 tool calling / self-consistency / RAG / reflexion 都比它直观。想继续的话,我们可以:<strong>接着做 Week 1 剩下的某个作业</strong>,或者<strong>直接进 Week 2(Coding Agents 与 MCP)</strong>,又或者回到你的 <strong>llm-wiki 项目</strong>把这周学的 RAG 真正写进 <code>indexer</code> 里。你定方向就行。</p>
+</details>
+<h4 id="_2">小模型的局限性，判定答案的规则</h4>
+<p>在这个任务中，由于这是一个12B的小模型，即使prompt写的再好，也只有一定的几率能输出正确答案。尤其是httpstatus这样有多个t，能分成两个token，部分对称结构的单词，对于连strawberry中有几个r都数不明白的模型来说这个任务非常困难。</p>
+<p>还好，测评函数给了5次机会，只要有一次对了就行。</p>
+<p>而且测评函数只取模型返回的所有字符，也就是说模型不能输出除了结果外的任何内容。</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>response = chat(
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>model=&quot;mistral-nemo:12b&quot;,
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>messages=[
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>{&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: system_prompt},
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a># role 有三种: &quot;system&quot;（系统指令）, &quot;user&quot;（用户输入）, &quot;assistant&quot;（模型回复）
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: USER_PROMPT},
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>],
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>options={&quot;temperature&quot;: 0.5},
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a># ↑ temperature (温度) 控制输出的随机性:
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>)
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a># response.message.content 是模型返回的文本内容
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a># .strip() 去掉字符串首尾的空白字符（空格、换行、制表符等）
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>output_text = response.message.content.strip()
+</span></code></pre></div>
+<blockquote>
+<p>好消息！如果将题目httpstatus直接写入system prompt，模型第一次就能输出正确结果。
+好吧这有点作弊。</p>
+</blockquote>
 
 
 
@@ -1936,7 +2212,7 @@
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2026年6月12日 06:21:44 UTC">2026年6月12日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2026年6月14日 02:23:31 UTC">2026年6月14日</span>
   </span>
 
     
